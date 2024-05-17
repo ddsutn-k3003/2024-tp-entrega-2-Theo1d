@@ -1,5 +1,6 @@
 package ar.edu.utn.dds.k3003.app;
 
+import ar.edu.utn.dds.k3003.clients.LogisticaProxy;
 import ar.edu.utn.dds.k3003.clients.ViandasProxy;
 import ar.edu.utn.dds.k3003.facades.dtos.Constants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -17,9 +18,19 @@ import java.util.TimeZone;
 
 public class WebApp {
     public static void main(String[] args) {
+
         var env = System.getenv();
+
+        // Variables de entorno
+        var URL_VIANDAS = env.get("URL_VIANDAS");
+        var URL_LOGISTICA = env.get("URL_LOGISTICA");
+        var URL_HELADERAS = env.get("URL_HELADERAS");
+        var URL_COLABORADORES = env.get("URL_COLABORADORES");
+
         ObjectMapper objectMapper = createObjectMapper();
         var fachada = new Fachada();
+
+        fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
 
         var port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
