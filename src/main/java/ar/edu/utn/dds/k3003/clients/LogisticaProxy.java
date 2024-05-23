@@ -5,8 +5,12 @@ import ar.edu.utn.dds.k3003.facades.FachadaLogistica;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.RutaDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
+import ar.edu.utn.dds.k3003.facades.dtos.ViandaDTO;
 import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.http.HttpStatus;
+import lombok.SneakyThrows;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -16,7 +20,7 @@ import java.util.NoSuchElementException;
 public class LogisticaProxy implements FachadaLogistica {
 
     private final String endpoint;
-    private final ViandasRetrofitClient service;
+    private final LogisticaRetrofitClient service;
 
     public LogisticaProxy(ObjectMapper objectMapper) {
         var env = System.getenv();
@@ -28,7 +32,7 @@ public class LogisticaProxy implements FachadaLogistica {
                         .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                         .build();
 
-        this.service = retrofit.create(ViandasRetrofitClient.class);
+        this.service = retrofit.create(LogisticaRetrofitClient.class);
 
     }
     @Override
@@ -46,9 +50,17 @@ public class LogisticaProxy implements FachadaLogistica {
         return null;
     }
 
+    @SneakyThrows
     @Override
-    public List<TrasladoDTO> trasladosDeColaborador(Long aLong, Integer integer, Integer integer1) {
-        return List.of();
+    public List<TrasladoDTO> trasladosDeColaborador(Long id, Integer mes, Integer anio) throws NoSuchElementException{
+        Response<List<TrasladoDTO>> execute = service.get(id, mes, anio).execute();
+        if (execute.isSuccessful()) {
+            return execute.body();
+        }
+        if (execute.code() == HttpStatus.NOT_FOUND.getCode()) {
+            throw new NoSuchElementException("No se encontraron traslados");
+        }
+        throw new RuntimeException("Error conectandose con el componente logistica");
     }
 
     @Override

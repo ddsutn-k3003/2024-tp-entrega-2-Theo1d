@@ -30,19 +30,18 @@ public class WebApp {
         ObjectMapper objectMapper = createObjectMapper();
         var fachada = new Fachada();
 
-        fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
-        fachada.setViandasProxy(new ViandasProxy(objectMapper));
 
         var port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
 
+        fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
+        fachada.setViandasProxy(new ViandasProxy(objectMapper));
+        var colaboradorController = new ColaboradorController(fachada);
+
      //   var app = Javalin.create().start(port);
         var app = Javalin.create(config -> {
-            config.jsonMapper(new JavalinJackson().updateMapper(mapper -> {
-                configureObjectMapper(mapper);
-            }));
+            config.jsonMapper(new JavalinJackson().updateMapper(WebApp::configureObjectMapper));
         }).start(port);
 
-        var colaboradorController = new ColaboradorController(fachada);
 
         app.post("/colaboradores", colaboradorController::agregar);
         app.get("/colaboradores/{id}", colaboradorController::obtenerColaborador);
