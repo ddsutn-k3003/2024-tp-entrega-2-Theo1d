@@ -50,9 +50,13 @@ public class ViandasProxy implements FachadaViandas {
   @SneakyThrows
   @Override
   public List<ViandaDTO> viandasDeColaborador(Long id, Integer mes, Integer anio) throws NoSuchElementException {
-    Response<List<ViandaDTO>> execute = service.get(id, mes, anio).execute();
+    Response<List<ViandaDTO>> execute = service.getViandas(id, mes, anio).execute();
     if (execute.isSuccessful()) {
-      return execute.body();
+      /*var viandaPrueba=new ViandaDTO(null,null,null,null,null);
+      List<ViandaDTO> respuesta =new ArrayList<>();
+      respuesta.add(viandaPrueba);
+      return respuesta;*/
+      return null;
     }
     if (execute.code() == HttpStatus.NOT_FOUND.getCode()) {
       throw new NoSuchElementException("No se encontraron viandas");

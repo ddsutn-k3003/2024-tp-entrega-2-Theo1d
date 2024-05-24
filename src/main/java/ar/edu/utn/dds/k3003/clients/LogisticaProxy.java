@@ -5,7 +5,6 @@ import ar.edu.utn.dds.k3003.facades.FachadaLogistica;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.RutaDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
-import ar.edu.utn.dds.k3003.facades.dtos.ViandaDTO;
 import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.HttpStatus;
@@ -53,7 +52,7 @@ public class LogisticaProxy implements FachadaLogistica {
     @SneakyThrows
     @Override
     public List<TrasladoDTO> trasladosDeColaborador(Long id, Integer mes, Integer anio) throws NoSuchElementException{
-        Response<List<TrasladoDTO>> execute = service.get(id, mes, anio).execute();
+        Response<List<TrasladoDTO>> execute = service.getTraslados(id, mes, anio).execute();
         if (execute.isSuccessful()) {
             return execute.body();
         }

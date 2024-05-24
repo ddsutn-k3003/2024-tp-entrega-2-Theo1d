@@ -45,7 +45,6 @@ public class WebApp {
 
         app.post("/colaboradores", colaboradorController::agregar);
         app.get("/colaboradores/{id}", colaboradorController::obtenerColaborador);
-        app.get("/listaColaboradores", colaboradorController::mostrarColaboradores);
         app.patch("/colaboradores/{id}", colaboradorController::modificarColaboracion);
         app.get("/colaboradores/{id}/puntos", colaboradorController::obtenerPuntos);
         app.put("/formula", colaboradorController::actualizarPesosPuntos);

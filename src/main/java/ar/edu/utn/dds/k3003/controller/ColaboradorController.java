@@ -43,13 +43,6 @@ public class ColaboradorController {
     }
   }
 
-  public void mostrarColaboradores(Context context)
-  {
-    ColaboradorDTO colaborador0 = new ColaboradorDTO("theo", List.of(FormaDeColaborarEnum.DONADOR));
-    ColaboradorDTO colaboradorRta = this.fachada.agregar(colaborador0);
-    context.json(this.fachada.colaboradorRepository.findById(0L));
-  }
-
   public void modificarColaboracion(Context context) {
     Long id = context.pathParamAsClass("id",Long.class).get();
     FormaDeColaborarEnum[] list= context.bodyAsClass(FormaDeColaborarEnum[].class);//esta bien esto?

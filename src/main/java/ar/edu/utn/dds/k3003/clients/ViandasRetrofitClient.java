@@ -12,5 +12,5 @@ import java.util.List;
 public interface ViandasRetrofitClient {
 
     @GET("viandasDeColaborador}")
-    Call <List<ViandaDTO>> get(@Query("id") Long id, @Query("mes") Integer mes, @Query("anio") Integer anio);
+    Call <List<ViandaDTO>> getViandas(@Query("id") Long id, @Query("mes") Integer mes, @Query("anio") Integer anio);
 }
