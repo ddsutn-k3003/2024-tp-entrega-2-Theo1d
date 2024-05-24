@@ -23,7 +23,7 @@ public class ColaboradorController {
   public void agregar(Context context) {
   try {
     ColaboradorDTO colaboradorDTORta = this.fachada.agregar(context.bodyAsClass(ColaboradorDTO.class));
-    context.json(this.fachada.colaboradorRepository.getColaboradores());
+    context.json(colaboradorDTORta);
     context.status(HttpStatus.CREATED);
    // context.result("Colaborador agregado");
   } catch (NoSuchElementException e) {
